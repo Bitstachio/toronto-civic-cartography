@@ -92,6 +92,7 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
       <label htmlFor="select-display-mode">
         Display Mode
         <select
+          value={mapConfig.displayMode}
           onChange={(e) =>
             setMapConfig((prev) => ({
               ...prev,
@@ -100,7 +101,9 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           }
         >
           <option value="individual">Individual</option>
-          <option value="neighbourhood">Neighbourhood</option>
+          <option value="City_Neighbourhoods.geojson">Neighbourhood</option>
+          <option value="Former_Municipality_Boundaries.geojson">Former Municipality Boundaries</option>
+          <option value="City_Wards.geojson">City Wards</option>
         </select>
       </label>
     </form>

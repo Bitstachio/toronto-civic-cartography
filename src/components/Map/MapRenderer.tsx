@@ -33,7 +33,7 @@ const MapRenderer = ({ mapConfig }) => {
           address: row["SITE ADDRESS"],
         }));
 
-        const geoData = await fetch("toronto_crs84.geojson").then((res) => res.json());
+        const geoData = await fetch(`public/${mapConfig.displayMode}`).then((res) => res.json());
         const scores = {};
         const counts = {};
 

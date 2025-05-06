@@ -13,7 +13,7 @@ const App = () => {
     colorHigh: "#008000",
     colorMedium: "#FFA500",
     colorLow: "#FF0000",
-    displayMode: "individual",
+    displayMode: "City_Neighbourhoods.geojson",
   });
 
   return (
