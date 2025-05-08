@@ -7,7 +7,7 @@ import { MapRendererProps } from "./Map.types";
 
 const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }) => {
   const map = useMap();
-  let currentLayer = useRef<L.GeoJSON | null>(null);
+  const currentLayer = useRef<L.GeoJSON | null>(null);
 
   const getColor = (score: number) => {
     return score >= mapConfig.thresholdHigh
@@ -22,18 +22,17 @@ const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }
   }, [mapConfig]);
 
   const loadMap = (file: string) => {
-    Papa.parse(file, {
+    Papa.parse<MapRendererProps["rowtype"]>(file, {
       download: true,
       header: true,
       skipEmptyLines: true,
       complete: async function (results) {
         const buildings = results.data.map((row) => {
-          const typedRow = row as MapRendererProps["rowtype"];
           return {
-            latitude: parseFloat(typedRow["LATITUDE"] as string),
-            longitude: parseFloat(typedRow["LONGITUDE"] as string),
-            score: parseFloat(typedRow["CURRENT BUILDING EVAL SCORE"] as string),
-            address: typedRow["SITE ADDRESS"] as string,
+            latitude: parseFloat(row["LATITUDE"] as string),
+            longitude: parseFloat(row["LONGITUDE"] as string),
+            score: parseFloat(row["CURRENT BUILDING EVAL SCORE"] as string),
+            address: row["SITE ADDRESS"] as string,
           };
         });
 
@@ -59,8 +58,8 @@ const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }
         });
 
         // Compute stats
-        let statsByNeighbourhood: MapRendererProps["statsByNeighbourhoodType"] = {};
-        for (let name in scores) {
+        const statsByNeighbourhood: MapRendererProps["statsByNeighbourhoodType"] = {};
+        for (const name in scores) {
           if (counts[name] >= mapConfig.minBuildings) {
             const values = scores[name];
             const count = values.length;
