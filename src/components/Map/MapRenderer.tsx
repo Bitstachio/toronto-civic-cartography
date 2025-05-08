@@ -3,12 +3,13 @@ import { useEffect, useRef } from "react";
 import Papa from "papaparse";
 import * as turf from "@turf/turf";
 import L from "leaflet";
+import { MapRendererProps } from "./Map.types";
 
-const MapRenderer = ({ mapConfig }) => {
+const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }) => {
   const map = useMap();
-  let currentLayer = useRef(null);
+  const currentLayer = useRef<L.GeoJSON | null>(null);
 
-  const getColor = (score) => {
+  const getColor = (score: number) => {
     return score >= mapConfig.thresholdHigh
       ? mapConfig.colorHigh
       : score >= mapConfig.thresholdMedium
@@ -20,22 +21,24 @@ const MapRenderer = ({ mapConfig }) => {
     loadMap("Apartment Building Evaluations 2023 - current.csv");
   }, [mapConfig]);
 
-  const loadMap = (file) => {
-    Papa.parse(file, {
+  const loadMap = (file: string) => {
+    Papa.parse<MapRendererProps["rowtype"]>(file, {
       download: true,
       header: true,
       skipEmptyLines: true,
       complete: async function (results) {
-        const buildings = results.data.map((row) => ({
-          latitude: parseFloat(row["LATITUDE"]),
-          longitude: parseFloat(row["LONGITUDE"]),
-          score: parseFloat(row["CURRENT BUILDING EVAL SCORE"]),
-          address: row["SITE ADDRESS"],
-        }));
+        const buildings = results.data.map((row) => {
+          return {
+            latitude: parseFloat(row["LATITUDE"] as string),
+            longitude: parseFloat(row["LONGITUDE"] as string),
+            score: parseFloat(row["CURRENT BUILDING EVAL SCORE"] as string),
+            address: row["SITE ADDRESS"] as string,
+          };
+        });
 
         const geoData = await fetch("toronto_crs84.geojson").then((res) => res.json());
-        const scores = {};
-        const counts = {};
+        const scores: Record<string, number[]> = {};
+        const counts: Record<string, number> = {};
 
         buildings.forEach((b) => {
           if (!isNaN(b.latitude) && !isNaN(b.longitude) && !isNaN(b.score)) {
@@ -55,8 +58,8 @@ const MapRenderer = ({ mapConfig }) => {
         });
 
         // Compute stats
-        let statsByNeighbourhood = {};
-        for (let name in scores) {
+        const statsByNeighbourhood: MapRendererProps["statsByNeighbourhoodType"] = {};
+        for (const name in scores) {
           if (counts[name] >= mapConfig.minBuildings) {
             const values = scores[name];
             const count = values.length;
@@ -86,7 +89,7 @@ const MapRenderer = ({ mapConfig }) => {
 
         currentLayer.current = L.geoJSON(geoData, {
           style: function (feature) {
-            const name = feature.properties.AREA_NAME;
+            const name: string = feature?.properties?.AREA_NAME || "Unknown";
             const stats = statsByNeighbourhood[name];
             return stats
               ? {
