@@ -4,8 +4,16 @@ import Map from "./components/Map/Map.tsx";
 import OutputForm from "./components/OutputForm/OutputForm.tsx";
 import { useState } from "react";
 import { MapRendererProps } from "./components/Map/Map.types";
+import { api } from "./data/api.ts";
 
 const App = () => {
+  const fetchData = async () => {
+    const data = await api.get("/package_show", { params: { id: "dinesafe" } });
+    console.log(data);
+    return data;
+  }
+  fetchData();
+
   // Hooks
   const [mapConfig, setMapConfig] = useState<MapRendererProps["mapConfig"]>({
     minBuildings: 0,
