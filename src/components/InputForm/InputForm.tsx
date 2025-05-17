@@ -1,4 +1,9 @@
-const InputForm = ({ mapConfig, setMapConfig }) => {
+import { datasets } from "../../data/datasets.ts";
+import { useState } from "react";
+
+const InputForm = ({ mapConfig, setMapConfig, setDatasetId }) => {
+  const [intermediaryDatasetId, setIntermediaryDatasetId] = useState<string>("apartment-building-registration");
+
   return (
     <form>
       <label htmlFor="input-min-buildings">
@@ -103,6 +108,18 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           <option value="neighbourhood">Neighbourhood</option>
         </select>
       </label>
+      <br />
+      <label htmlFor="dataset">
+        Dataset
+        <select name="dataset" id="dataset" onChange={(e) => setIntermediaryDatasetId(e.target.value)}>
+          {datasets.map((dataset) => (
+            <option value={dataset.id}>{dataset.title}</option>
+          ))}
+        </select>
+      </label>
+      <button type="button" onClick={() => setDatasetId(intermediaryDatasetId)}>
+        Apply
+      </button>
     </form>
   );
 };
