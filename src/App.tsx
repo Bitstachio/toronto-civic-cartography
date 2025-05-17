@@ -5,21 +5,19 @@ import OutputForm from "./components/OutputForm/OutputForm.tsx";
 import { useEffect, useState } from "react";
 import { MapRendererProps } from "./components/Map/Map.types";
 import { api } from "./data/api.ts";
+import { useQuery } from "@tanstack/react-query";
 
 const App = () => {
   const [datasetId, setDatasetId] = useState<string>("apartment-building-registration");
 
-  const fetchData = async (datasetId: string) => {
-    const data = await api.get("/package_show", { params: { id: datasetId } });
-    console.log(data);
-    return data;
-  };
-
-  useEffect(() => {
-    fetchData(datasetId).then((response) => {
-      console.log(response);
-    });
-  }, [datasetId]);
+  const { data } = useQuery({
+    queryKey: ["dataset", datasetId],
+    queryFn: async () => {
+      const entrypoint = await api.get("/api/3/action/package_show", { params: { id: datasetId } });
+      const dumpId = entrypoint.data.result.resources[0].id;
+      return api.get("/datastore/dump/" + dumpId);
+    },
+  });
 
   // Hooks
   const [mapConfig, setMapConfig] = useState<MapRendererProps["mapConfig"]>({
