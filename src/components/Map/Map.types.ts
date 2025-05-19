@@ -24,4 +24,4 @@ export interface SummaryStats {
   max: number;
 }
 
-export type NeighborhoodStats = Record<string, SummaryStats>;
+export type NeighbourhoodStats = Record<string, SummaryStats>;

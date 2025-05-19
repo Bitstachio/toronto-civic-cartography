@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import Papa from "papaparse";
 import * as turf from "@turf/turf";
 import L from "leaflet";
-import { MapConfig, NeighborhoodStats, Row } from "./Map.types";
+import { MapConfig, NeighbourhoodStats, Row } from "./Map.types";
 
 interface MapRendererProps {
   mapConfig: MapConfig;
@@ -65,7 +65,7 @@ const MapRenderer = ({ mapConfig, data }: MapRendererProps) => {
         });
 
         // Compute stats
-        const statsByNeighbourhood: NeighborhoodStats = {};
+        const statsByNeighbourhood: NeighbourhoodStats = {};
         for (const name in scores) {
           if (counts[name] >= mapConfig.minBuildings) {
             const values = scores[name];
