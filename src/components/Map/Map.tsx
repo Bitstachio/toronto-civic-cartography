@@ -1,9 +1,9 @@
 import "./Map.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import MapRenderer from "./MapRenderer.tsx";
-import { MapRendererProps } from "./Map.types";
+import { MapConfig } from "./Map.types.ts";
 
-const Map = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }) => {
+const Map = ({ mapConfig }: { mapConfig: MapConfig }) => {
   return (
     <MapContainer center={[43.7, -79.4]} zoom={11} scrollWheelZoom={false} id="map">
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

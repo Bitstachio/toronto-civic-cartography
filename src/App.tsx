@@ -2,10 +2,10 @@ import "./App.css";
 import InputForm from "./components/InputForm/InputForm.tsx";
 import Map from "./components/Map/Map.tsx";
 import OutputForm from "./components/OutputForm/OutputForm.tsx";
-import { useEffect, useState } from "react";
-import { MapRendererProps } from "./components/Map/Map.types";
+import { useState } from "react";
 import { api } from "./data/api.ts";
 import { useQuery } from "@tanstack/react-query";
+import { MapConfig } from "./components/Map/Map.types.ts";
 
 const App = () => {
   const [datasetId, setDatasetId] = useState<string>("apartment-building-registration");
@@ -20,7 +20,7 @@ const App = () => {
   });
 
   // Hooks
-  const [mapConfig, setMapConfig] = useState<MapRendererProps["mapConfig"]>({
+  const [mapConfig, setMapConfig] = useState<MapConfig>({
     minBuildings: 0,
     thresholdHigh: 90,
     thresholdMedium: 80,
