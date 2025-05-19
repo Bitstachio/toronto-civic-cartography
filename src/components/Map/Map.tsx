@@ -3,7 +3,12 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import MapRenderer from "./MapRenderer.tsx";
 import { MapConfig } from "./Map.types.ts";
 
-const Map = ({ mapConfig }: { mapConfig: MapConfig }) => {
+interface MapProps {
+  mapConfig: MapConfig;
+  data: string;
+}
+
+const Map = ({ mapConfig, data }: MapProps) => {
   return (
     <MapContainer center={[43.7, -79.4]} zoom={11} scrollWheelZoom={false} id="map">
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -12,7 +17,7 @@ const Map = ({ mapConfig }: { mapConfig: MapConfig }) => {
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
-      <MapRenderer mapConfig={mapConfig} />
+      <MapRenderer mapConfig={mapConfig} data={data} />
     </MapContainer>
   );
 };

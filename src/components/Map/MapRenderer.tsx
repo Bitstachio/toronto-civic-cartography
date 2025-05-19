@@ -5,7 +5,14 @@ import * as turf from "@turf/turf";
 import L from "leaflet";
 import { MapConfig, NeighborhoodStats, Row } from "./Map.types";
 
-const MapRenderer = ({ mapConfig }: { mapConfig: MapConfig }) => {
+interface MapRendererProps {
+  mapConfig: MapConfig;
+  data: string; // TODO: Change data from CSV to JSON and update type accordingly
+}
+
+const MapRenderer = ({ mapConfig, data }: MapRendererProps) => {
+  console.log(data); // TODO: This log statement is for validating `data`; remove it later
+
   const map = useMap();
   const currentLayer = useRef<L.GeoJSON | null>(null);
 

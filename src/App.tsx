@@ -33,7 +33,7 @@ const App = () => {
   return (
     <>
       <InputForm mapConfig={mapConfig} setMapConfig={setMapConfig} setDatasetId={setDatasetId} />
-      <Map mapConfig={mapConfig} />
+      {data ? <Map mapConfig={mapConfig} data={data.data} /> : <h1>Loading...</h1>}
       <OutputForm />
     </>
   );
