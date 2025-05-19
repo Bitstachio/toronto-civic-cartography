@@ -11,19 +11,22 @@ This project aims to aid in data analysis and simplify map creation through a us
 ## How to Run
 
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/toronto-civic-cartography.git
-    cd toronto-civic-cartography
-    ```
+
+   ```bash
+   git clone https://github.com/your-username/toronto-civic-cartography.git
+   cd toronto-civic-cartography
+   ```
 
 2. Install dependencies:
-    ```bash
-    npm install
-    ```
+
+   ```bash
+   npm install
+   ```
 
 3. Start the development server:
-    ```bash
-    npm run dev
-    ```
+
+   ```bash
+   npm run dev
+   ```
 
 4. Open your browser and navigate to `http://localhost:5173`.
