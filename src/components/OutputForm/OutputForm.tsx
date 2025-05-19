@@ -1,9 +1,5 @@
 const OutputForm = () => {
-  return (
-    <form>
-      {/* TODO: Implement output form (export map, etc.) */}
-    </form>
-  );
-}
+  return <form>{/* TODO: Implement output form (export map, etc.) */}</form>;
+};
 
 export default OutputForm;

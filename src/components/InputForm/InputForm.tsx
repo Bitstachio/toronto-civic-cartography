@@ -1,4 +1,16 @@
-const InputForm = ({ mapConfig, setMapConfig }) => {
+import { datasets } from "../../data/datasets.ts";
+import { useState } from "react";
+import { MapConfig } from "../Map/Map.types.ts";
+
+interface InputFormProps {
+  mapConfig: MapConfig;
+  setMapConfig: React.Dispatch<React.SetStateAction<MapConfig>>;
+  setDatasetId: (datasetId: string) => void;
+}
+
+const InputForm = ({ mapConfig, setMapConfig, setDatasetId }: InputFormProps) => {
+  const [intermediaryDatasetId, setIntermediaryDatasetId] = useState<string>("apartment-building-registration");
+
   return (
     <form>
       <label htmlFor="input-min-buildings">
@@ -11,7 +23,7 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           onChange={(e) =>
             setMapConfig((prev) => ({
               ...prev,
-              minBuildings: e.target.value,
+              minBuildings: parseInt(e.target.value),
             }))
           }
         />
@@ -40,7 +52,7 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           onChange={(e) =>
             setMapConfig((prev) => ({
               ...prev,
-              thresholdHigh: e.target.value,
+              thresholdHigh: parseInt(e.target.value),
             }))
           }
         />
@@ -69,7 +81,7 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           onChange={(e) =>
             setMapConfig((prev) => ({
               ...prev,
-              thresholdMedium: e.target.value,
+              thresholdMedium: parseInt(e.target.value),
             }))
           }
         />
@@ -95,7 +107,7 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           onChange={(e) =>
             setMapConfig((prev) => ({
               ...prev,
-              displayMode: e.target.value,
+              displayMode: e.target.value as "individual" | "neighbourhood",
             }))
           }
         >
@@ -103,6 +115,20 @@ const InputForm = ({ mapConfig, setMapConfig }) => {
           <option value="neighbourhood">Neighbourhood</option>
         </select>
       </label>
+      <br />
+      <label htmlFor="dataset">
+        Dataset
+        <select name="dataset" id="dataset" onChange={(e) => setIntermediaryDatasetId(e.target.value)}>
+          {datasets.map((dataset) => (
+            <option key={dataset.id} value={dataset.id}>
+              {dataset.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      <button type="button" onClick={() => setDatasetId(intermediaryDatasetId)}>
+        Apply
+      </button>
     </form>
   );
 };

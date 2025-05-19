@@ -3,9 +3,16 @@ import { useEffect, useRef } from "react";
 import Papa from "papaparse";
 import * as turf from "@turf/turf";
 import L from "leaflet";
-import { MapRendererProps } from "./Map.types";
+import { MapConfig, NeighbourhoodStats, Row } from "./Map.types";
 
-const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }) => {
+interface MapRendererProps {
+  mapConfig: MapConfig;
+  data: string; // TODO: Change data from CSV to JSON and update type accordingly
+}
+
+const MapRenderer = ({ mapConfig, data }: MapRendererProps) => {
+  console.log(data); // TODO: This log statement is for validating `data`; remove it later
+
   const map = useMap();
   const currentLayer = useRef<L.GeoJSON | null>(null);
 
@@ -22,7 +29,7 @@ const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }
   }, [mapConfig]);
 
   const loadMap = (file: string) => {
-    Papa.parse<MapRendererProps["rowtype"]>(file, {
+    Papa.parse<Row>(file, {
       download: true,
       header: true,
       skipEmptyLines: true,
@@ -58,7 +65,7 @@ const MapRenderer = ({ mapConfig }: { mapConfig: MapRendererProps["mapConfig"] }
         });
 
         // Compute stats
-        const statsByNeighbourhood: MapRendererProps["statsByNeighbourhoodType"] = {};
+        const statsByNeighbourhood: NeighbourhoodStats = {};
         for (const name in scores) {
           if (counts[name] >= mapConfig.minBuildings) {
             const values = scores[name];
