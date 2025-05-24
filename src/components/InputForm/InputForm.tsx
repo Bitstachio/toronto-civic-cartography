@@ -16,6 +16,7 @@ const InputForm = ({ mapConfig, setMapConfig, setDatasetId }: InputFormProps) =>
       <label htmlFor="input-min-buildings">
         Minimum Buildings
         <input
+          id="input-min-buildings"
           type="number"
           min="0"
           step="1"
